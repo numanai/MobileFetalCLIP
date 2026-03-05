@@ -4,8 +4,6 @@
 
 ### Selective Repulsive Knowledge Distillation for Mobile Fetal Ultrasound Analysis
 
-**ECCV 2026**
-
 [![Paper](https://img.shields.io/badge/arXiv-Paper-B31B1B.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
