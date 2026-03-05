@@ -1,27 +1,144 @@
+<div align="center">
+
 # MobileFetalCLIP
 
-Clean, anonymized, and reproducible code release for the MobileFetalCLIP ECCV submission.
+### Selective Repulsive Knowledge Distillation for Mobile Fetal Ultrasound Analysis
 
-This repository focuses on:
-- canonical training/evaluation code paths,
-- full paper ablation experiment registry,
-- reproducibility scripts and table generation,
-- access-gated dataset preparation and validation.
+**ECCV 2026**
 
-No personal paths, machine-specific scripts, or credentials are included.
+[![Paper](https://img.shields.io/badge/arXiv-Paper-B31B1B.svg)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C.svg)](https://pytorch.org/)
 
-## 1. Install
+[Paper]() | [Checkpoints](#checkpoints) | [Quick Start](#quick-start) | [Reproduce Results](#reproduce-paper-results)
+
+</div>
+
+---
+
+## Highlights
+
+- **26x fewer parameters** &mdash; 11.4M visual encoder (FastViT) vs. 304M (ViT-L/14)
+- **Surpasses the teacher** on zero-shot HC18 biometry validity (**88.6%** vs. 83.5%) and brain sub-plane F1 (**0.784** vs. 0.702)
+- **Real-time on-device inference** &mdash; 1.6 ms on iPhone 16 Pro (635 FPS), 24x faster than FetalCLIP
+- **97-98% linear probing retention** of the teacher's downstream performance
+
+<div align="center">
+<img src="assets/figure1_method_overview.png" width="100%" alt="MobileFetalCLIP Method Overview"/>
+<br>
+<em><b>Figure 1.</b> Overview of MobileFetalCLIP. (A) Distillation setup with frozen FetalCLIP teacher. (B) Selective Repulsive KD decomposes the KD loss into diagonal (fixed, preserving image-text alignment) and off-diagonal (scheduled, transitioning from attraction to repulsion) components. (C) The repulsive phase forces discovery of architecturally native features, producing well-separated clusters.</em>
+</div>
+
+---
+
+## Abstract
+
+Foundation models for fetal ultrasound require hundreds of millions of parameters, precluding point-of-care deployment. We distill FetalCLIP (ViT-L/14, 304M image-encoder parameters) into **MobileFetalCLIP**, a FastViT-based mobile model (11.4M image parameters). Standard knowledge distillation (KD) is limited under such large capacity gaps (~26x), as the student cannot reproduce the teacher's architectural properties.
+
+We introduce **Selective Repulsive Knowledge Distillation**, which decomposes the contrastive KD loss into diagonal (matched-pair) and off-diagonal (non-target) components. The diagonal remains attractive, preserving image-text alignment, while the off-diagonal weight decays into negative values, forcing discovery of *architecturally native* features. MobileFetalCLIP surpasses the FetalCLIP teacher in zero-shot HC18 biometry validity and brain sub-plane F1, while maintaining competitive 5-plane classification, with 26x fewer visual parameters.
+
+---
+
+## Method: Selective Repulsive KD
+
+The total training objective is:
+
+```
+L = L_CLIP + lambda_KL(t) * L_KD
+```
+
+**Selective decomposition** splits the KD loss into two components:
+
+```
+L_KD = L_diag + beta(t) * L_off-diag
+```
+
+| Component | Weight | Role |
+|---|---|---|
+| **Diagonal** (matched pairs) | Fixed at 1.0 | Preserves image-text alignment throughout training |
+| **Off-diagonal** (non-target) | Scheduled: beta_0 -> beta_0 * r | Attracts early, then *repels* once weight crosses zero |
+
+The off-diagonal weight follows a linear schedule parameterized by initial value beta_0 and minimum ratio r:
+
+```
+beta(t) = beta_0 * (1 - (t/T) * (1 - r))
+```
+
+When r < 0, the weight eventually becomes negative, inverting the gradient to actively push the student away from the teacher's inter-class confusion structure.
+
+### Training Phases
+
+1. **Attractive phase** (beta > 0): Standard KD &mdash; student absorbs domain knowledge from the teacher
+2. **Transition** (beta ~ 0): KD contributes negligibly; student driven primarily by L_CLIP
+3. **Repulsive phase** (beta < 0): Gradient inverts &mdash; student discovers architecturally native features
+
+<div align="center">
+<img src="assets/figure2_training_dynamics.png" width="75%" alt="Training Dynamics"/>
+<br>
+<em><b>Figure 2.</b> Training dynamics. (a) KD weight schedule: repulsive variants cross into negative values. (b) Zero-shot performance exhibits a characteristic "late surge" once entering the repulsive phase; Selective Repulsive KD achieves the highest final score, exceeding the FetalCLIP teacher.</em>
+</div>
+
+---
+
+## Results
+
+### Zero-Shot Performance
+
+| Model | Params | HC18 Val. (%) | Class F1 | Avg. |
+|---|---:|---:|---:|---:|
+| *FetalCLIP Teacher (ViT-L/14)* | *427M* | *83.5* | *0.871* | *0.853* |
+| CLIP (ViT-L/14) | 427M | 11.0 | 0.270 | 0.190 |
+| BiomedCLIP (ViT-B/16) | 150M | 24.0 | 0.466 | 0.353 |
+| UniMed-CLIP (ViT-B/16) | 150M | 9.0 | 0.495 | 0.293 |
+| MobileFetalCLIP &mdash; No KD | 75M | 71.3 | 0.823 | 0.768 |
+| MobileFetalCLIP &mdash; Static Logit KD | 75M | 79.4 | 0.859 | 0.826 |
+| MobileFetalCLIP &mdash; Coupled Repulsive KD | 75M | 84.4 | 0.869 | 0.857 |
+| **MobileFetalCLIP &mdash; Selective Repulsive KD** | **75M** | **88.6** | **0.886** | **0.886** |
+
+### On-Device Inference (CoreML, fp16, batch 1)
+
+| Model | Vis. Params | GMACs | iPhone 16 Pro | iPhone 17 Pro |
+|---|---:|---:|---:|---:|
+| FetalCLIP (ViT-L/14) | 304M | 38.9 | 37.6 ms | 31.9 ms |
+| **MobileFetalCLIP (FastViT)** | **11.4M** (26x &darr;) | **1.2** (32x &darr;) | **1.6 ms** (24x &darr;) | **1.4 ms** (23x &darr;) |
+
+> MobileFetalCLIP's encoder runs at **635 FPS** on iPhone 16 Pro &mdash; well beyond the 30-60 FPS typical of diagnostic ultrasound, enabling real-time assistive AI in point-of-care workflows.
+
+### Linear Probing (Frozen Features)
+
+| Model | 6-View F1 | Brain F1 | CHD AUROC |
+|---|---:|---:|---:|
+| FetalCLIP (ViT-L/14) | .947 | .820 | .787 |
+| **MobileFetalCLIP (FastViT)** | **.930** | **.799** | **.769** |
+| *Retention* | *98.2%* | *97.4%* | *97.7%* |
+
+### Feature Space Analysis
+
+<div align="center">
+<img src="assets/figure3_tsne.png" width="75%" alt="t-SNE Visualization"/>
+<br>
+<em><b>Figure 3.</b> t-SNE projections of brain sub-plane embeddings. (a) No KD: overlapping clusters. (b) Static KD: marginal improvement. (c) Selective Repulsive KD: well-separated, compact clusters.</em>
+</div>
+
+---
+
+## Quick Start
+
+### Installation
 
 ```bash
+git clone https://github.com/numanai/MobileFetalCLIP.git
+cd MobileFetalCLIP
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 pip install -e .
 ```
 
-## 2. Validate Data Layout
+### Dataset Preparation
 
-If you already have licensed data access, first map your assets into this repo layout:
+Map your licensed data assets into the expected layout:
 
 ```bash
 python tools/prepare_access_gated_dataset.py \
@@ -32,49 +149,23 @@ python tools/prepare_access_gated_dataset.py \
   --source-hc18-csv "/path/to/training_set_pixel_size_and_HC.csv"
 ```
 
-Then validate:
+Validate:
 
 ```bash
 python tools/validate_dataset_contract.py --strict
 ```
 
-## 3. Run a Single Training Experiment
+### Training
 
 ```bash
 bash scripts/run_experiment.sh \
-  --experiment-id static-kd \
+  --experiment-id selective-repulsive \
   --model-config configs/model/mobileclip2_s0_fetal.json \
   --pretrained checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
   --teacher checkpoints/FetalCLIP_weights.pt
 ```
 
-Outputs are saved in `outputs/experiments/<experiment-id>/`.
-
-## 4. Reproduce Paper Suites
-
-Run main suite:
-
-```bash
-bash scripts/run_reproduce_suite.sh \
-  --suite main \
-  --model-config configs/model/mobileclip2_s0_fetal.json \
-  --pretrained checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
-  --teacher checkpoints/FetalCLIP_weights.pt
-```
-
-Run full ablation suite:
-
-```bash
-bash scripts/run_reproduce_suite.sh \
-  --suite ablation \
-  --model-config configs/model/mobileclip2_s0_fetal.json \
-  --pretrained checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
-  --teacher checkpoints/FetalCLIP_weights.pt
-```
-
-## 5. Evaluate and Benchmark
-
-Evaluate a checkpoint:
+### Evaluation
 
 ```bash
 python -m mobile_fetal_clip.cli eval \
@@ -85,7 +176,7 @@ python -m mobile_fetal_clip.cli eval \
   --output-json outputs/eval/selective_beta2_eval.json
 ```
 
-Benchmark:
+### On-Device Benchmarking
 
 ```bash
 bash scripts/benchmark_inference.sh \
@@ -99,14 +190,97 @@ bash scripts/benchmark_inference.sh \
   --output-json outputs/benchmarks/mobileclip2_s0_cpu.json
 ```
 
+See [docs/benchmark_protocol.md](docs/benchmark_protocol.md) for CoreML export and iPhone deployment instructions.
+
+---
+
+## Reproduce Paper Results
+
+**Main suite** (Table 1):
+
+```bash
+bash scripts/run_reproduce_suite.sh \
+  --suite main \
+  --model-config configs/model/mobileclip2_s0_fetal.json \
+  --pretrained checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
+  --teacher checkpoints/FetalCLIP_weights.pt
+```
+
+**Full ablation suite** (Table 3):
+
+```bash
+bash scripts/run_reproduce_suite.sh \
+  --suite ablation \
+  --model-config configs/model/mobileclip2_s0_fetal.json \
+  --pretrained checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
+  --teacher checkpoints/FetalCLIP_weights.pt
+```
+
+---
+
 ## Checkpoints
 
-Checkpoints are not committed. See [checkpoints/README.md](checkpoints/README.md) for expected filenames and placement.
+Checkpoints are not included in this repository. See [checkpoints/README.md](checkpoints/README.md) for expected filenames and placement instructions.
 
-## Additional Docs
+---
 
-- [Dataset Contract](docs/dataset_contract.md)
-- [Reproducibility](docs/reproducibility.md)
-- [Experiment Registry](docs/experiment_registry.md)
-- [Benchmark Protocol](docs/benchmark_protocol.md)
-- [Checkpoint Policy](docs/checkpoint_policy.md)
+## Repository Structure
+
+```
+MobileFetalCLIP/
+├── assets/                  # README figures
+├── configs/                 # Model and experiment configurations
+├── checkpoints/             # Checkpoint placement (see README inside)
+├── docs/
+│   ├── benchmark_protocol.md
+│   ├── checkpoint_policy.md
+│   ├── dataset_contract.md
+│   ├── experiment_registry.md
+│   └── reproducibility.md
+├── scripts/                 # Training, evaluation, and benchmarking scripts
+├── src/                     # Core library
+├── tests/                   # Unit and integration tests
+├── tools/                   # Dataset preparation and validation utilities
+├── CITATION.cff
+├── LICENSE
+├── requirements.txt
+└── pyproject.toml
+```
+
+---
+
+## Documentation
+
+| Document | Description |
+|---|---|
+| [Dataset Contract](docs/dataset_contract.md) | Required datasets, licensing, and directory layout |
+| [Reproducibility](docs/reproducibility.md) | Step-by-step guide to reproduce all paper results |
+| [Experiment Registry](docs/experiment_registry.md) | Full registry of ablation configurations |
+| [Benchmark Protocol](docs/benchmark_protocol.md) | On-device benchmarking methodology and CoreML export |
+| [Checkpoint Policy](docs/checkpoint_policy.md) | Checkpoint naming, storage, and access |
+
+---
+
+## Citation
+
+```bibtex
+@inproceedings{mobilfetalclip2026,
+  title     = {MobileFetalCLIP: Selective Repulsive Knowledge Distillation
+               for Mobile Fetal Ultrasound Analysis},
+  author    = {Anonymous},
+  booktitle = {European Conference on Computer Vision (ECCV)},
+  year      = {2026}
+}
+```
+
+---
+
+## License
+
+This project is released under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+<sub>MobileFetalCLIP &mdash; Bringing foundation-model intelligence to point-of-care fetal ultrasound.</sub>
+</div>
