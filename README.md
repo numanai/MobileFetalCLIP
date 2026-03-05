@@ -1,4 +1,4 @@
-# MobileFetalCLIP (ECCV Reproducibility Release)
+# MobileFetalCLIP
 
 Clean, anonymized, and reproducible code release for the MobileFetalCLIP ECCV submission.
 
