@@ -1,0 +1,7 @@
+id: static-kd
+description: Static logit KD baseline (CLIP-KD style)
+teacher_required: true
+args:
+  distill_weight: 1.0
+  distill_temperature: 5.0
+  feature_kd_weight: 0.0

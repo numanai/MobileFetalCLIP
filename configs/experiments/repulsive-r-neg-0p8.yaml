@@ -1,0 +1,8 @@
+id: repulsive-r-neg-0p8
+description: Coupled repulsive KD schedule to -0.8
+teacher_required: true
+args:
+  distill_weight: 1.0
+  distill_temperature: 5.0
+  distill_weight_decay: true
+  distill_weight_min_ratio: -0.8

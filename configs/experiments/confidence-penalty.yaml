@@ -1,0 +1,9 @@
+id: confidence-penalty
+description: Confidence penalty baseline with positive KD decay
+teacher_required: true
+args:
+  distill_weight: 1.0
+  distill_temperature: 5.0
+  distill_weight_decay: true
+  distill_weight_min_ratio: 0.1
+  confidence_penalty: 0.1

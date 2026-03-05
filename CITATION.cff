@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+title: "MobileFetalCLIP: ECCV Reproducibility Code"
+message: "If you use this repository, please cite the corresponding ECCV submission."
+type: software
+authors:
+  - name: "Anonymous"
+repository-code: "https://github.com/<anonymous>/<repo>"
+license: MIT
+version: 0.2.0

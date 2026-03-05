@@ -1,0 +1,6 @@
+id: no-kd
+description: Contrastive training only (no teacher KD)
+teacher_required: false
+args:
+  distill_weight: 0.0
+  feature_kd_weight: 0.0

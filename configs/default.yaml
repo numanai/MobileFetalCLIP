@@ -1,0 +1,59 @@
+training:
+  epochs: 20
+  warmup_steps: 500
+  lr: 1.0e-5
+  weight_decay: 0.1
+  beta1: 0.9
+  beta2: 0.98
+  eps: 1.0e-6
+  batch_size: 512
+  gradient_accumulation_steps: 2
+  mixed_precision: "fp16"
+  gather_with_grad: true
+  local_loss: false
+
+  contrastive_weight: 1.0
+  distill_weight: 1.0
+  distill_temperature: 5.0
+  feature_kd_weight: 0.0
+  feature_kd_type: "mse"
+  teacher_embed_dim: 768
+  loss_type: "clip"
+  distill_weight_decay: false
+  distill_weight_min_ratio: 0.1
+  decay_feature_kd: false
+  confidence_penalty: 0.0
+  decoupled_kd: false
+  logit_standardization: false
+  legacy_decay: false
+
+  grad_clip_norm: 1.0
+  log_every_n_steps: 10
+  log_with:
+    - "tensorboard"
+    - "wandb"
+  project_name: "mobile_fetal_clip"
+  save_frequency: 1
+  output_dir: "outputs"
+  num_workers: 6
+
+data:
+  train_data: "data/pretraining/shards/shard_{0000000001..0000000025}.tar"
+  train_num_samples: 246349
+  val_data: null
+  val_num_samples: 0
+
+evaluation:
+  zeroshot_frequency: 1
+  fetal_planes_db_images: "data/eval/FETAL_PLANES_DB/Images"
+  fetal_planes_db_csv: "data/eval/FETAL_PLANES_DB/FETAL_PLANES_DB_data.csv"
+  eval_five_planes: true
+  eval_brain_subplanes: true
+  hc18_images: "data/eval/HC18/training_set"
+  hc18_csv: "data/eval/HC18/training_set_pixel_size_and_HC.csv"
+  hc18_input_size: null
+  eval_hc18_ga: true
+  batch_size: 16
+  num_workers: 4
+
+seed: 42

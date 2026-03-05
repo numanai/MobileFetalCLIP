@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+.ruff_cache/
+
+# Build artifacts
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Training and logging artifacts
+outputs/
+wandb/
+logs/
+*.log
+*.tfevents.*
+
+# Checkpoints and large binaries
+checkpoints/*.pt
+checkpoints/*.pth
+checkpoints/*.ckpt
+
+# Data
+data/
+*.tar
+*.zip
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/

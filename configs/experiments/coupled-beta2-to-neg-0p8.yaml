@@ -1,0 +1,8 @@
+id: coupled-beta2-to-neg-0p8
+description: Coupled KD with beta0=2.0 decaying to -0.8
+teacher_required: true
+args:
+  distill_weight: 2.0
+  distill_temperature: 5.0
+  distill_weight_decay: true
+  distill_weight_min_ratio: -0.4

@@ -1,0 +1,9 @@
+id: selective-beta8-to-neg-0p8
+description: Selective repulsive KD (decoupled) beta0=8.0 to -0.8
+teacher_required: true
+args:
+  decoupled_kd: true
+  distill_weight: 8.0
+  distill_temperature: 5.0
+  distill_weight_decay: true
+  distill_weight_min_ratio: -0.1
