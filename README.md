@@ -7,7 +7,7 @@
 [![Project Website](https://img.shields.io/badge/Project-Website-0F8A8D.svg)](https://numansaeed.com/MobileFetalCLIP/)
 [![Paper](https://img.shields.io/badge/arXiv-2603.05421-B31B1B.svg)](https://arxiv.org/abs/2603.05421)
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Models-FFD21E.svg?logo=huggingface&logoColor=black)](https://huggingface.co/collections/numansaeed/fetal-ultrasound-models)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C.svg)](https://pytorch.org/)
 
@@ -281,7 +281,7 @@ MobileFetalCLIP/
 
 ## License
 
-This project is released under the [MIT License](LICENSE).
+This project is released under the [CC BY-NC 4.0](LICENSE).
 
 ---
 
