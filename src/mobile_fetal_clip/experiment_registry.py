@@ -1,4 +1,4 @@
-"""Canonical experiment registry for ECCV reproducibility."""
+"""Canonical experiment registry for MobileFetalCLIP release experiments."""
 
 from __future__ import annotations
 

@@ -5,11 +5,15 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mobile-fetal-clip"
 version = "0.2.0"
-description = "ECCV reproducibility code for MobileFetalCLIP"
+description = "Training and evaluation code for MobileFetalCLIP"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
-authors = [{name = "Anonymous ECCV Submission"}]
+authors = [
+    {name = "Numan Saeed"},
+    {name = "Fadillah Adamsyah Maani"},
+    {name = "Mohammad Yaqub"},
+]
 
 dependencies = [
     "torch>=2.1.0",
@@ -37,6 +41,12 @@ dev = ["pytest>=7.0.0", "ruff>=0.6.0", "black>=24.0.0"]
 
 [project.scripts]
 mobile-fetal-clip = "mobile_fetal_clip.cli:main"
+
+[project.urls]
+Homepage = "https://numansaeed.com/MobileFetalCLIP/"
+Repository = "https://github.com/numanai/MobileFetalCLIP"
+Paper = "https://arxiv.org/abs/2603.05421"
+"Hugging Face" = "https://huggingface.co/numansaeed/MobileFetalCLIP"
 
 [tool.setuptools.packages.find]
 where = ["src"]

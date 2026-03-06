@@ -11,5 +11,11 @@ This repository does not commit model checkpoints.
 
 ## Release note
 
-Public release URLs and checksums are provided when artifacts are published.
-Until then, keep placeholders in local setup.
+Public weights are hosted on Hugging Face:
+
+- `https://huggingface.co/numansaeed/MobileFetalCLIP`
+- `https://huggingface.co/numansaeed/MobileFetalCLIP/tree/main`
+
+Download the required files from the Hugging Face repo and place them locally with the expected
+filenames above. Checksums should be tracked in `checkpoints/SHA256SUMS.txt` for any reproduced
+or redistributed setup.

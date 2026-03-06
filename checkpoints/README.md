@@ -9,11 +9,19 @@ Checkpoints are intentionally not committed.
 - `MobileCLIP2-B/mobileclip2_b.pt`
 - `FetalCLIP_weights.pt`
 
-## Placeholder release links
+## Public weights
 
-- Base student checkpoints: `TBD`
-- Teacher checkpoint: `TBD`
-- Fine-tuned paper checkpoints: `TBD`
+Public checkpoints are hosted on Hugging Face:
+
+- Model hub: `https://huggingface.co/numansaeed/MobileFetalCLIP`
+- Files tab: `https://huggingface.co/numansaeed/MobileFetalCLIP/tree/main`
+
+Download the required artifacts from the Hugging Face repo and place them under `checkpoints/`
+using the expected filenames above. The release includes:
+
+- Base student checkpoints
+- Teacher checkpoint
+- Fine-tuned MobileFetalCLIP weights used for the paper/release
 
 ## Checksum policy
 

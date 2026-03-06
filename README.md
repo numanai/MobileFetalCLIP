@@ -4,12 +4,14 @@
 
 ### Selective Repulsive Knowledge Distillation for Mobile Fetal Ultrasound Analysis
 
-[![Paper](https://img.shields.io/badge/arXiv-Paper-B31B1B.svg)]()
+[![Project Website](https://img.shields.io/badge/Project-Website-0F8A8D.svg)](https://numansaeed.com/MobileFetalCLIP/)
+[![Paper](https://img.shields.io/badge/arXiv-2603.05421-B31B1B.svg)](https://arxiv.org/abs/2603.05421)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Models-FFD21E.svg?logo=huggingface&logoColor=black)](https://huggingface.co/numansaeed/MobileFetalCLIP)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C.svg)](https://pytorch.org/)
 
-[Paper]() | [Checkpoints](#checkpoints) | [Quick Start](#quick-start) | [Reproduce Results](#reproduce-paper-results)
+[Project Website](https://numansaeed.com/MobileFetalCLIP/) | [Paper](https://arxiv.org/abs/2603.05421) | [Hugging Face / Model Weights](https://huggingface.co/numansaeed/MobileFetalCLIP) | [Checkpoints](#checkpoints) | [Quick Start](#quick-start) | [Reproduce Results](#reproduce-paper-results)
 
 </div>
 
@@ -218,7 +220,10 @@ bash scripts/run_reproduce_suite.sh \
 
 ## Checkpoints
 
-Checkpoints are not included in this repository. See [checkpoints/README.md](checkpoints/README.md) for expected filenames and placement instructions.
+Checkpoints are not included in this repository. Public model weights are hosted on
+[Hugging Face](https://huggingface.co/numansaeed/MobileFetalCLIP). See
+[checkpoints/README.md](checkpoints/README.md) for expected filenames, placement instructions, and
+the weight hub link.
 
 ---
 
@@ -262,12 +267,13 @@ MobileFetalCLIP/
 ## Citation
 
 ```bibtex
-@inproceedings{mobilfetalclip2026,
+@article{saeed2026mobilefetalclip,
   title     = {MobileFetalCLIP: Selective Repulsive Knowledge Distillation
                for Mobile Fetal Ultrasound Analysis},
-  author    = {Anonymous},
-  booktitle = {European Conference on Computer Vision (ECCV)},
-  year      = {2026}
+  author    = {Saeed, Numan and Maani, Fadillah Adamsyah and Yaqub, Mohammad},
+  journal   = {arXiv preprint arXiv:2603.05421},
+  year      = {2026},
+  url       = {https://arxiv.org/abs/2603.05421}
 }
 ```
 
