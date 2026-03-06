@@ -11,11 +11,10 @@ This repository does not commit model checkpoints.
 
 ## Release note
 
-Public weights are hosted on Hugging Face:
+Public weights are listed in the Hugging Face collection:
 
-- `https://huggingface.co/numansaeed/MobileFetalCLIP`
-- `https://huggingface.co/numansaeed/MobileFetalCLIP/tree/main`
+- `https://huggingface.co/collections/numansaeed/fetal-ultrasound-models`
 
-Download the required files from the Hugging Face repo and place them locally with the expected
-filenames above. Checksums should be tracked in `checkpoints/SHA256SUMS.txt` for any reproduced
-or redistributed setup.
+Open the MobileFetalCLIP entry from the collection, download the required files, and place them
+locally with the expected filenames above. Checksums should be tracked in
+`checkpoints/SHA256SUMS.txt` for any reproduced or redistributed setup.

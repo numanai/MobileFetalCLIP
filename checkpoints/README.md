@@ -11,13 +11,12 @@ Checkpoints are intentionally not committed.
 
 ## Public weights
 
-Public checkpoints are hosted on Hugging Face:
+Public checkpoints are listed in the Hugging Face collection:
 
-- Model hub: `https://huggingface.co/numansaeed/MobileFetalCLIP`
-- Files tab: `https://huggingface.co/numansaeed/MobileFetalCLIP/tree/main`
+- Collection: `https://huggingface.co/collections/numansaeed/fetal-ultrasound-models`
 
-Download the required artifacts from the Hugging Face repo and place them under `checkpoints/`
-using the expected filenames above. The release includes:
+Open the MobileFetalCLIP entry from the collection, download the required artifacts, and place
+them under `checkpoints/` using the expected filenames above. The release includes:
 
 - Base student checkpoints
 - Teacher checkpoint
