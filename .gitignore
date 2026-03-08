@@ -23,9 +23,7 @@ logs/
 *.tfevents.*
 
 # Checkpoints and large binaries
-checkpoints/*.pt
-checkpoints/*.pth
-checkpoints/*.ckpt
+checkpoints/
 
 # Data
 data/

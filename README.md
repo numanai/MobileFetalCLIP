@@ -155,6 +155,28 @@ Validate:
 python tools/validate_dataset.py --strict
 ```
 
+Expected layout:
+
+```text
+data/
+  pretraining/
+    shards/
+      shard_0000000001.tar
+      ...
+  eval/
+    FETAL_PLANES_DB/
+      Images/
+      FETAL_PLANES_DB_data.csv
+    HC18/
+      training_set/
+      training_set_pixel_size_and_HC.csv
+```
+
+Expected CSV columns:
+
+- `FETAL_PLANES_DB_data.csv`: `Image_name`, `Plane`, `Brain_plane`, `Train `
+- `training_set_pixel_size_and_HC.csv`: `filename`, `pixel size(mm)`, `head circumference (mm)`
+
 ### Training
 
 ```bash
@@ -187,14 +209,28 @@ bash scripts/benchmark_inference.sh \
   --device cpu \
   --scope both \
   --batch-sizes 1,16 \
+  --warmup 20 \
+  --iters 100 \
+  --repeats 3 \
   --output-json outputs/benchmarks/mobileclip2_s0_cpu.json
 ```
-
-See [docs/benchmark_protocol.md](docs/benchmark_protocol.md) for CoreML export and iPhone deployment instructions.
 
 ---
 
 ## Reproduce Paper Results
+
+Available experiment ids:
+
+- `no-kd`
+- `static-kd`
+- `repulsive-r-neg-0p5`
+- `repulsive-r-neg-0p8`
+- `coupled-beta2-to-neg-0p8`
+- `confidence-penalty`
+- `selective-beta1-to-neg-0p8`
+- `selective-beta2-to-neg-0p8`
+- `selective-beta4-to-neg-0p8`
+- `selective-beta8-to-neg-0p8`
 
 **Main suite** (Table 1):
 
@@ -220,10 +256,17 @@ bash scripts/run_reproduce_suite.sh \
 
 ## Checkpoints
 
-Checkpoints are not included in this repository. Download the base and teacher weights from the
-[Hugging Face collection](https://huggingface.co/collections/numansaeed/fetal-ultrasound-models)
-and place them under `checkpoints/` as described in
-[checkpoints/README.md](checkpoints/README.md).
+Model weights are not stored in this repository. Download them from the
+[Hugging Face collection](https://huggingface.co/collections/numansaeed/fetal-ultrasound-models),
+create a local `checkpoints/` directory, and place the files with these names:
+
+- `checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt`
+- `checkpoints/MobileCLIP2-S2/mobileclip2_s2.pt`
+- `checkpoints/MobileCLIP2-B/mobileclip2_b.pt`
+- `checkpoints/FetalCLIP_weights.pt`
+
+Training runs will write fine-tuned checkpoints under
+`outputs/experiments/<experiment-id>/checkpoints/`.
 
 ---
 
@@ -233,30 +276,14 @@ and place them under `checkpoints/` as described in
 MobileFetalCLIP/
 ├── assets/                  # README figures
 ├── configs/                 # Model and experiment configurations
-├── checkpoints/             # Checkpoint placement (see README inside)
-├── docs/
-│   ├── benchmark_protocol.md
-│   ├── dataset_layout.md
-│   └── reproducibility.md
 ├── scripts/                 # Training, evaluation, and benchmarking scripts
 ├── src/                     # Core library
 ├── tests/                   # Unit and integration tests
 ├── tools/                   # Dataset preparation and validation utilities
-├── CITATION.cff
 ├── LICENSE
 ├── requirements.txt
 └── pyproject.toml
 ```
-
----
-
-## Documentation
-
-| Document | Description |
-|---|---|
-| [Dataset Layout](docs/dataset_layout.md) | Expected data directories and CSV fields |
-| [Reproducibility](docs/reproducibility.md) | Step-by-step guide to reproduce all paper results |
-| [Benchmark Protocol](docs/benchmark_protocol.md) | On-device benchmarking methodology and CoreML export |
 
 ---
 
