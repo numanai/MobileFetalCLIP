@@ -20,4 +20,4 @@ def test_cli_help_smoke() -> None:
         check=False,
     )
     assert proc.returncode == 0
-    assert "reproducibility CLI" in proc.stdout
+    assert "MobileFetalCLIP CLI" in proc.stdout

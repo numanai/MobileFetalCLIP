@@ -3,8 +3,7 @@
 Use `tools/benchmark_inference.py` with:
 - fixed warmup/iters/repeats,
 - explicit device and precision,
-- explicit batch sizes,
-- schema-versioned JSON output.
+- explicit batch sizes.
 
 Recommended baseline command:
 

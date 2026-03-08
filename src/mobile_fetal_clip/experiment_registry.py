@@ -1,4 +1,4 @@
-"""Canonical experiment registry for MobileFetalCLIP release experiments."""
+"""Experiment definitions for MobileFetalCLIP."""
 
 from __future__ import annotations
 
@@ -72,7 +72,6 @@ def suite_experiment_ids(suite: str) -> list[str]:
     if suite == "ablation":
         return ABLATION_EXPERIMENT_IDS
     if suite == "all":
-        # Preserve deterministic order: ablations first, then any new configs.
         extras = [
             exp_id
             for exp_id in list_experiment_ids()

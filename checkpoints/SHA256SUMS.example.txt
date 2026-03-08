@@ -1,3 +1,0 @@
-# Example format
-# <sha256>  <relative/path/to/checkpoint>
-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  MobileCLIP2-S0/mobileclip2_s0.pt

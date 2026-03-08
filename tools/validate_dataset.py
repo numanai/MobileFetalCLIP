@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate dataset layout and schema for MobileFetalCLIP reproducibility."""
+"""Validate the dataset layout expected by MobileFetalCLIP."""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ def _validate_csv_columns(path: Path, required: set[str], label: str, errors: li
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Validate dataset contract")
+    parser = argparse.ArgumentParser(description="Validate dataset layout")
     parser.add_argument(
         "--train-shards",
         default="data/pretraining/shards/shard_{0000000001..0000000025}.tar",
@@ -113,7 +113,7 @@ def main() -> int:
     if args.strict and len(existing_shards) != len(shards):
         errors.append("Strict mode enabled and not all expanded shards exist.")
 
-    print("Dataset contract check")
+    print("Dataset check")
     print(f"- Expected samples: {args.train_num_samples}")
     print(f"- Found shard files: {len(existing_shards)}")
 
@@ -125,7 +125,7 @@ def main() -> int:
             print(f"ERROR: {msg}")
         return 1
 
-    print("PASS: dataset contract is satisfied.")
+    print("PASS: dataset layout looks good.")
     return 0
 
 

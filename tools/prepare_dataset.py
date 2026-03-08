@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare access-gated data layout expected by the reproducibility code."""
+"""Create the dataset layout expected by MobileFetalCLIP."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ def _link_or_copy(src: Path, dst: Path, symlink: bool) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Prepare access-gated dataset layout")
+    parser = argparse.ArgumentParser(description="Prepare dataset layout")
     parser.add_argument("--dest-root", default="data")
     parser.add_argument(
         "--source-train-shards",

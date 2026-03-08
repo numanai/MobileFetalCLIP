@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Reproduce canonical experiment suites used in the paper.
+# Run one of the paper experiment suites.
 #
 # Example:
 #   bash scripts/run_reproduce_suite.sh \
@@ -21,6 +21,9 @@ PROJECT_NAME="mobile_fetal_clip"
 MASTER_CSV="outputs/experiments_master.csv"
 SEED="42"
 DRY_RUN="0"
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+cd "$PROJECT_DIR"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -46,7 +49,6 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export PYTHONPATH="${PROJECT_DIR}/src:${PYTHONPATH:-}"
 
 CMD=(

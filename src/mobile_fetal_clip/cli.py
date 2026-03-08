@@ -1,4 +1,4 @@
-"""Top-level CLI for MobileFetalCLIP reproducibility workflows."""
+"""Top-level CLI for MobileFetalCLIP workflows."""
 
 from __future__ import annotations
 
@@ -217,7 +217,7 @@ def cmd_reproduce(args: argparse.Namespace) -> int:
         if args.dry_run:
             cmd.append("--dry-run")
 
-        code = _run_command(cmd, dry_run=False)
+        code = _run_command(cmd, dry_run=args.dry_run)
         if code != 0:
             return code
 
@@ -232,17 +232,17 @@ def cmd_benchmark(args: argparse.Namespace) -> int:
 
 
 def cmd_validate_data(args: argparse.Namespace) -> int:
-    tool = _repo_root() / "tools" / "validate_dataset_contract.py"
+    tool = _repo_root() / "tools" / "validate_dataset.py"
     validate_args = _normalize_remainder_args(args.validate_args)
     cmd = [sys.executable, str(tool)] + validate_args
     return _run_command(cmd, dry_run=False)
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="MobileFetalCLIP reproducibility CLI")
+    parser = argparse.ArgumentParser(description="MobileFetalCLIP CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    p_train = subparsers.add_parser("train", help="Run one canonical experiment")
+    p_train = subparsers.add_parser("train", help="Run one experiment")
     p_train.add_argument("--base-config", default="configs/default.yaml")
     p_train.add_argument("--experiment-config", required=True)
     p_train.add_argument("--model-config", required=True)
@@ -267,7 +267,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_eval.add_argument("--output-json", required=True)
     p_eval.set_defaults(func=cmd_eval)
 
-    p_repro = subparsers.add_parser("reproduce", help="Run canonical experiment suite")
+    p_repro = subparsers.add_parser("reproduce", help="Run an experiment suite")
     p_repro.add_argument("--suite", choices=["main", "ablation", "all"], default="main")
     p_repro.add_argument("--base-config", default="configs/default.yaml")
     p_repro.add_argument("--model-config", required=True)
@@ -286,7 +286,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_bench.set_defaults(func=cmd_benchmark)
 
     p_validate = subparsers.add_parser(
-        "validate-data", help="Run dataset contract validator"
+        "validate-data", help="Validate a dataset layout"
     )
     p_validate.add_argument("validate_args", nargs=argparse.REMAINDER)
     p_validate.set_defaults(func=cmd_validate_data)

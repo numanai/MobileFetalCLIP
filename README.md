@@ -138,10 +138,10 @@ pip install -e .
 
 ### Dataset Preparation
 
-Map your licensed data assets into the expected layout:
+Place your licensed datasets into the layout expected by the training code:
 
 ```bash
-python tools/prepare_access_gated_dataset.py \
+python tools/prepare_dataset.py \
   --source-train-shards "/path/to/shard_{0000000001..0000000025}.tar" \
   --source-fetal-planes-images "/path/to/FETAL_PLANES_DB/Images" \
   --source-fetal-planes-csv "/path/to/FETAL_PLANES_DB_data.csv" \
@@ -152,14 +152,14 @@ python tools/prepare_access_gated_dataset.py \
 Validate:
 
 ```bash
-python tools/validate_dataset_contract.py --strict
+python tools/validate_dataset.py --strict
 ```
 
 ### Training
 
 ```bash
 bash scripts/run_experiment.sh \
-  --experiment-id selective-repulsive \
+  --experiment-id selective-beta2-to-neg-0p8 \
   --model-config configs/model/mobileclip2_s0_fetal.json \
   --pretrained checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
   --teacher checkpoints/FetalCLIP_weights.pt
@@ -220,10 +220,10 @@ bash scripts/run_reproduce_suite.sh \
 
 ## Checkpoints
 
-Checkpoints are not included in this repository. Public model weights are listed in the
-[Hugging Face collection](https://huggingface.co/collections/numansaeed/fetal-ultrasound-models). See
-[checkpoints/README.md](checkpoints/README.md) for expected filenames, placement instructions, and
-the weight hub link.
+Checkpoints are not included in this repository. Download the base and teacher weights from the
+[Hugging Face collection](https://huggingface.co/collections/numansaeed/fetal-ultrasound-models)
+and place them under `checkpoints/` as described in
+[checkpoints/README.md](checkpoints/README.md).
 
 ---
 
@@ -236,9 +236,7 @@ MobileFetalCLIP/
 ├── checkpoints/             # Checkpoint placement (see README inside)
 ├── docs/
 │   ├── benchmark_protocol.md
-│   ├── checkpoint_policy.md
-│   ├── dataset_contract.md
-│   ├── experiment_registry.md
+│   ├── dataset_layout.md
 │   └── reproducibility.md
 ├── scripts/                 # Training, evaluation, and benchmarking scripts
 ├── src/                     # Core library
@@ -256,11 +254,9 @@ MobileFetalCLIP/
 
 | Document | Description |
 |---|---|
-| [Dataset Contract](docs/dataset_contract.md) | Required datasets, licensing, and directory layout |
+| [Dataset Layout](docs/dataset_layout.md) | Expected data directories and CSV fields |
 | [Reproducibility](docs/reproducibility.md) | Step-by-step guide to reproduce all paper results |
-| [Experiment Registry](docs/experiment_registry.md) | Full registry of ablation configurations |
 | [Benchmark Protocol](docs/benchmark_protocol.md) | On-device benchmarking methodology and CoreML export |
-| [Checkpoint Policy](docs/checkpoint_policy.md) | Checkpoint naming, storage, and access |
 
 ---
 

@@ -1,3 +1,3 @@
-"""MobileFetalCLIP reproducibility package."""
+"""MobileFetalCLIP package."""
 
 __version__ = "0.2.0"

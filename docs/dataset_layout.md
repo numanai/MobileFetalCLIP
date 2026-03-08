@@ -1,6 +1,6 @@
-# Dataset Contract
+# Dataset Layout
 
-This release expects user-provided, access-gated datasets in this layout:
+MobileFetalCLIP expects your licensed datasets in this layout:
 
 ```text
 data/
@@ -17,17 +17,17 @@ data/
       training_set_pixel_size_and_HC.csv
 ```
 
-## Required schema
+## Required files
 
 ### FETAL_PLANES_DB CSV
-Required columns:
+Expected columns:
 - `Image_name`
 - `Plane`
 - `Brain_plane`
 - `Train `
 
 ### HC18 CSV
-Required columns:
+Expected columns:
 - `filename`
 - `pixel size(mm)`
 - `head circumference (mm)`
@@ -37,7 +37,7 @@ Required columns:
 Run:
 
 ```bash
-python tools/validate_dataset_contract.py --strict
+python tools/validate_dataset.py --strict
 ```
 
-The validator checks file presence, shard expansion, and required CSV columns.
+The validator checks file presence, shard expansion, and the expected CSV columns.

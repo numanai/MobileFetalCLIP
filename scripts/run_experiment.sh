@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Canonical experiment launcher for the clean reproducibility release.
+# Run one configured experiment.
 #
 # Example:
 #   bash scripts/run_experiment.sh \
@@ -22,6 +22,9 @@ PROJECT_NAME="mobile_fetal_clip"
 MASTER_CSV="outputs/experiments_master.csv"
 SEED="42"
 DRY_RUN="0"
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+cd "$PROJECT_DIR"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -66,8 +69,9 @@ if [[ -z "$EXPERIMENT_ID" ]]; then
 fi
 
 OUTPUT_DIR="${OUTPUT_ROOT%/}/${EXPERIMENT_ID}"
-mkdir -p "$OUTPUT_DIR"
-PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if [[ "$DRY_RUN" != "1" ]]; then
+  mkdir -p "$OUTPUT_DIR"
+fi
 export PYTHONPATH="${PROJECT_DIR}/src:${PYTHONPATH:-}"
 
 CMD=(
