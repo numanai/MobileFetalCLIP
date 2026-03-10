@@ -4,14 +4,14 @@
 
 ### Selective Repulsive Knowledge Distillation for Mobile Fetal Ultrasound Analysis
 
-[![Project Website](https://img.shields.io/badge/Project-Website-0F8A8D.svg)](https://numansaeed.com/MobileFetalCLIP/)
+[![Project Website](https://img.shields.io/badge/Project-Website-0F8A8D.svg)](https://www.numansaeed.com/mobilefetalclip/)
 [![Paper](https://img.shields.io/badge/arXiv-2603.05421-B31B1B.svg)](https://arxiv.org/abs/2603.05421)
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Models-FFD21E.svg?logo=huggingface&logoColor=black)](https://huggingface.co/collections/numansaeed/fetal-ultrasound-models)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C.svg)](https://pytorch.org/)
 
-[Project Website](https://numansaeed.com/MobileFetalCLIP/) | [Paper](https://arxiv.org/abs/2603.05421) | [Hugging Face / Model Weights](https://huggingface.co/collections/numansaeed/fetal-ultrasound-models) | [Checkpoints](#checkpoints) | [Quick Start](#quick-start) | [Reproduce Results](#reproduce-paper-results)
+[Project Website](https://www.numansaeed.com/mobilefetalclip/) | [Paper](https://arxiv.org/abs/2603.05421) | [Hugging Face / Model Weights](https://huggingface.co/collections/numansaeed/fetal-ultrasound-models) | [SonoSight Demo](#sonosight-demo) | [Checkpoints](#checkpoints) | [Quick Start](#quick-start) | [Reproduce Results](#reproduce-paper-results)
 
 </div>
 
@@ -23,6 +23,13 @@
 - **Surpasses the teacher** on zero-shot HC18 biometry validity (**88.6%** vs. 83.5%) and brain sub-plane F1 (**0.784** vs. 0.702)
 - **Real-time on-device inference** &mdash; 1.6 ms on iPhone 16 Pro (635 FPS), 24x faster than FetalCLIP
 - **97-98% linear probing retention** of the teacher's downstream performance
+
+## SonoSight Demo
+
+SonoSight is the mobile app prototype built on top of MobileFetalCLIP for handheld fetal
+ultrasound assistance. Watch the full 25-second demo on the project website.
+
+[![SonoSight demo on the project website](https://www.numansaeed.com/mobilefetalclip/mobile_hero.png)](https://www.numansaeed.com/mobilefetalclip/#sonosight-demo)
 
 <div align="center">
 <img src="assets/figure1_method_overview.png" width="100%" alt="MobileFetalCLIP Method Overview"/>
