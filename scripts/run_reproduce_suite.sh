@@ -7,8 +7,8 @@ set -euo pipefail
 #   bash scripts/run_reproduce_suite.sh \
 #     --suite main \
 #     --model-config configs/model/mobileclip2_s0_fetal.json \
-#     --pretrained checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
-#     --teacher checkpoints/FetalCLIP_weights.pt
+#     --pretrained /path/to/mobileclip2_s0.pt \
+#     --teacher /path/to/FetalCLIP_weights.pt
 
 SUITE="main"
 BASE_CONFIG="configs/default.yaml"

@@ -7,8 +7,8 @@ set -euo pipefail
 #   bash scripts/run_experiment.sh \
 #     --experiment-id static-kd \
 #     --model-config configs/model/mobileclip2_s0_fetal.json \
-#     --pretrained checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
-#     --teacher checkpoints/FetalCLIP_weights.pt
+#     --pretrained /path/to/mobileclip2_s0.pt \
+#     --teacher /path/to/FetalCLIP_weights.pt
 
 EXPERIMENT_ID=""
 EXPERIMENT_CONFIG=""

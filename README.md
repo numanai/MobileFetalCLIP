@@ -179,24 +179,32 @@ Expected CSV columns:
 
 ### Training
 
+Reproducing training requires a local MobileCLIP2-S0 initialization checkpoint for
+`--pretrained`. That base checkpoint is **not** published in the Hugging Face collection shown
+below.
+
 ```bash
 bash scripts/run_experiment.sh \
   --experiment-id selective-beta2-to-neg-0p8 \
   --model-config configs/model/mobileclip2_s0_fetal.json \
-  --pretrained checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
+  --pretrained /path/to/mobileclip2_s0.pt \
   --teacher checkpoints/FetalCLIP_weights.pt
 ```
 
 ### Evaluation
 
+To evaluate the released MobileFetalCLIP checkpoint from Hugging Face:
+
 ```bash
 python -m mobile_fetal_clip.cli eval \
   --model-config configs/model/mobileclip2_s0_fetal.json \
-  --base-checkpoint checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
-  --checkpoint outputs/experiments/selective-beta2-to-neg-0p8/checkpoints/best.pt \
+  --checkpoint checkpoints/mobile_fetal_clip_weights.pt \
   --eval-config configs/default.yaml \
-  --output-json outputs/eval/selective_beta2_eval.json
+  --output-json outputs/eval/mobile_fetal_clip_eval.json
 ```
+
+For a locally reproduced run, replace `--checkpoint` with
+`outputs/experiments/selective-beta2-to-neg-0p8/checkpoints/best.pt`.
 
 ### On-Device Benchmarking
 
@@ -204,8 +212,7 @@ python -m mobile_fetal_clip.cli eval \
 bash scripts/benchmark_inference.sh \
   --model-id mobileclip2_s0 \
   --model-config configs/model/mobileclip2_s0_fetal.json \
-  --base-ckpt checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
-  --finetuned-ckpt outputs/experiments/selective-beta2-to-neg-0p8/checkpoints/best.pt \
+  --finetuned-ckpt checkpoints/mobile_fetal_clip_weights.pt \
   --device cpu \
   --scope both \
   --batch-sizes 1,16 \
@@ -238,7 +245,7 @@ Available experiment ids:
 bash scripts/run_reproduce_suite.sh \
   --suite main \
   --model-config configs/model/mobileclip2_s0_fetal.json \
-  --pretrained checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
+  --pretrained /path/to/mobileclip2_s0.pt \
   --teacher checkpoints/FetalCLIP_weights.pt
 ```
 
@@ -248,7 +255,7 @@ bash scripts/run_reproduce_suite.sh \
 bash scripts/run_reproduce_suite.sh \
   --suite ablation \
   --model-config configs/model/mobileclip2_s0_fetal.json \
-  --pretrained checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt \
+  --pretrained /path/to/mobileclip2_s0.pt \
   --teacher checkpoints/FetalCLIP_weights.pt
 ```
 
@@ -256,16 +263,22 @@ bash scripts/run_reproduce_suite.sh \
 
 ## Checkpoints
 
-Model weights are not stored in this repository. Download them from the
-[Hugging Face collection](https://huggingface.co/collections/numansaeed/fetal-ultrasound-models),
-create a local `checkpoints/` directory, and place the files with these names:
+The [Hugging Face collection](https://huggingface.co/collections/numansaeed/fetal-ultrasound-models)
+currently publishes these two checkpoints:
 
-- `checkpoints/MobileCLIP2-S0/mobileclip2_s0.pt`
-- `checkpoints/MobileCLIP2-S2/mobileclip2_s2.pt`
-- `checkpoints/MobileCLIP2-B/mobileclip2_b.pt`
+- `numansaeed/fetalclip-model` with `FetalCLIP_weights.pt`
+- `numansaeed/MobileFetalCLIP` with `mobile_fetal_clip_weights.pt`
+
+If you only want to run the released models, create a local `checkpoints/` directory and place:
+
 - `checkpoints/FetalCLIP_weights.pt`
+- `checkpoints/mobile_fetal_clip_weights.pt`
 
-Training runs will write fine-tuned checkpoints under
+If you want to reproduce training from this repository, you will also need a separate
+MobileCLIP2-S0 initialization checkpoint for `--pretrained`. That file is not distributed in the
+Hugging Face collection above.
+
+Training runs you launch yourself will write fine-tuned checkpoints under
 `outputs/experiments/<experiment-id>/checkpoints/`.
 
 ---
